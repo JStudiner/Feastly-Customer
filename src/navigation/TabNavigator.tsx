@@ -11,7 +11,13 @@ const Tab = createBottomTabNavigator();
 
 const TabNavigator = () => {
   return (
-    <Tab.Navigator>
+    <Tab.Navigator
+      screenOptions={({ route }) => ({
+        headerShown: false,
+        tabBarActiveTintColor: "#CF9AE8",
+        tabBarInactiveTintColor: "gray",
+      })}
+    >
       <Tab.Screen name="Explore" component={Explore} />
       <Tab.Screen name="Map" component={Map} />
       <Tab.Screen name="Order" component={Order} />

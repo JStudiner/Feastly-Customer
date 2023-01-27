@@ -21,7 +21,13 @@ const RootNavigator = () => {
 
   return (
     <UserInfo.Provider value={{ userIntakeData, setUserIntakeData }}>
-      <LoginStackNav.Navigator>
+      <LoginStackNav.Navigator
+        screenOptions={({ route }) => ({
+          headerShown: false,
+          tabBarActiveTintColor: "#CF9AE8",
+          tabBarInactiveTintColor: "gray",
+        })}
+      >
         <LoginStackNav.Screen name="login" component={Login} />
         <LoginStackNav.Screen name="userintakev1" component={UserIntakeV1} />
         <LoginStackNav.Screen name="userintakev2" component={UserIntakeV2} />
