@@ -2,7 +2,8 @@ import React from "react";
 
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 
-import Explore from "../screens/Explore";
+import ExploreNavigator from "./ExploreNavigator";
+
 import Map from "../screens/Map";
 import Order from "../screens/Order";
 import Profile from "../screens/Profile";
@@ -18,7 +19,7 @@ const TabNavigator = () => {
         tabBarInactiveTintColor: "gray",
       })}
     >
-      <Tab.Screen name="Explore" component={Explore} />
+      <Tab.Screen name="Explore" component={ExploreNavigator} />
       <Tab.Screen name="Map" component={Map} />
       <Tab.Screen name="Order" component={Order} />
       <Tab.Screen name="Profile" component={Profile} />

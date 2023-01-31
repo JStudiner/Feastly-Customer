@@ -7,7 +7,13 @@ import HorizontalList from "../components/HorizontalList";
 const Explore = () => {
   return (
     <>
-      <Header bgColor="#DEEFEF" title="Find a Vendor" searchBar={true} />
+      <Header
+        bgColor="#DEEFEF"
+        title="Find a Vendor"
+        searchBar={true}
+        type="explore"
+        height="25%"
+      />
       <ScrollView>
         <HorizontalList title={"Nearby"} />
         <HorizontalList title={"Favourites"} />

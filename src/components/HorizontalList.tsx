@@ -1,3 +1,4 @@
+import { useNavigation } from "@react-navigation/native";
 import React from "react";
 import {
   Text,
@@ -27,7 +28,10 @@ const values: Vendor[] = [{ id: "1" }, { id: "2" }, { id: "3" }];
 interface HorizontalListProps {
   title: string;
 }
+
 const HorizontalList: React.FC<HorizontalListProps> = (props) => {
+  const navigation = useNavigation();
+
   const renderItem = (item: Vendor, index: number) => {
     return (
       <View
@@ -39,7 +43,11 @@ const HorizontalList: React.FC<HorizontalListProps> = (props) => {
         }}
       >
         <View style={[styles.shadow]}>
-          <TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => {
+              navigation.navigate("storefront");
+            }}
+          >
             <View
               style={[styles.container, { backgroundColor: colors[index] }]}
             >
