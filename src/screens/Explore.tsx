@@ -3,8 +3,11 @@ import { ScrollView } from "react-native";
 
 import Header from "../components/Header";
 import HorizontalList from "../components/HorizontalList";
+interface ExploreProps {
+  navigation: any;
+}
 
-const Explore = () => {
+const Explore: React.FC<ExploreProps> = (props) => {
   return (
     <>
       <Header
@@ -15,9 +18,12 @@ const Explore = () => {
         height="25%"
       />
       <ScrollView>
-        <HorizontalList title={"Nearby"} />
-        <HorizontalList title={"Favourites"} />
-        <HorizontalList title={"Picked For You"} />
+        <HorizontalList title={"Nearby"} navigation={props.navigation} />
+        <HorizontalList title={"Favourites"} navigation={props.navigation} />
+        <HorizontalList
+          title={"Picked For You"}
+          navigation={props.navigation}
+        />
       </ScrollView>
     </>
   );

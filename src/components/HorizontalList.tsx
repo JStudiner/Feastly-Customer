@@ -27,11 +27,10 @@ const values: Vendor[] = [{ id: "1" }, { id: "2" }, { id: "3" }];
 
 interface HorizontalListProps {
   title: string;
+  navigation: any;
 }
 
 const HorizontalList: React.FC<HorizontalListProps> = (props) => {
-  const navigation = useNavigation();
-
   const renderItem = (item: Vendor, index: number) => {
     return (
       <View
@@ -45,7 +44,7 @@ const HorizontalList: React.FC<HorizontalListProps> = (props) => {
         <View style={[styles.shadow]}>
           <TouchableOpacity
             onPress={() => {
-              navigation.navigate("storefront");
+              props.navigation.navigate("storefront");
             }}
           >
             <View

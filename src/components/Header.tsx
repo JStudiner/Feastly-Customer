@@ -15,7 +15,7 @@ interface HeaderProps {
   height: string;
 }
 const Header: React.FC<HeaderProps> = (props) => {
-  const { bgColor, title, type, height } = props;
+  const { bgColor, title, type, height, searchBar } = props;
   const navigation = useNavigation();
   const handleType = () => {
     if (type === "storefront") {
@@ -42,8 +42,21 @@ const Header: React.FC<HeaderProps> = (props) => {
           <View style={styles.textContainer}>
             <Text style={styles.text}>{title}</Text>
           </View>
-          <Searchbar />
+          {searchBar ? <Searchbar /> : <></>}
         </>
+      );
+    } else if (type === "cart") {
+      return (
+        <View style={styles.cartContainer}>
+          <View style={styles.textContainer}>
+            <Text style={styles.text}>{title}</Text>
+          </View>
+          <View style={styles.shadow}>
+            <TouchableOpacity style={styles.cartButton}>
+              <Text style={{ fontWeight: "700" }}>Past Orders</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
       );
     }
   };
@@ -59,13 +72,33 @@ const Header: React.FC<HeaderProps> = (props) => {
 export default Header;
 
 const styles = StyleSheet.create({
+  shadow: {
+    shadowColor: "#000000",
+    shadowOffset: { width: -2, height: 2 },
+    shadowOpacity: 1,
+    shadowRadius: 3,
+  },
+  cartContainer: {
+    display: "flex",
+    flexDirection: "row",
+    paddingHorizontal: "10%",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  cartButton: {
+    backgroundColor: "#F2C49B",
+    padding: 2,
+    borderColor: "black",
+    borderWidth: 2,
+    borderRadius: 5,
+  },
   container: {
     width: "100%",
     height: "25%",
     alignItems: "center",
     justifyContent: "space-evenly",
     borderBottomColor: "black",
-    borderBottomWidth: 2,
+    borderBottomWidth: 3,
     display: "flex",
   },
 

@@ -1,12 +1,12 @@
 import React from "react";
 import { Text } from "react-native";
 
-const Order = () => {
+const OrderHistory = () => {
   return (
     <>
-      <Text>Order</Text>
+      <Text>OrderHistory</Text>
     </>
   );
 };
 
-export default Order;
+export default OrderHistory;

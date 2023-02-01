@@ -8,16 +8,16 @@ import {
   FlatList,
   ScrollView,
 } from "react-native";
-
+import { useNavigation } from "@react-navigation/native";
 import Header from "../components/Header";
 import Button from "../components/Button";
-type hours = {
+export type hours = {
   day: string;
   open: number;
   close: number;
 };
 
-type storefront = {
+export type Storefront = {
   weeklyHours: hours[];
   rating: number;
   description: string;
@@ -25,7 +25,7 @@ type storefront = {
   products: Product[];
 };
 
-type Product = {
+export type Product = {
   name: string;
   description: string;
   imageURL: string;
@@ -34,7 +34,9 @@ type Product = {
   id: number;
 };
 
-const storefronts: storefront[] = [
+import { Order } from "./Cart";
+
+const storefronts: Storefront[] = [
   {
     weeklyHours: [
       { day: "Monday", open: 9, close: 17 },
@@ -107,7 +109,10 @@ const getCurrentDay = () => {
   return daysOfWeek[new Date().getDay()];
 };
 
-const Storefront = () => {
+interface StorefrontProps {
+  navigation: any;
+}
+const Storefront: React.FC<StorefrontProps> = (props) => {
   const currentStoreFront = storefronts[0];
   const currentDay = getCurrentDay();
   const maxRating = [1, 2, 3, 4, 5];
@@ -165,7 +170,7 @@ const Storefront = () => {
 
   const renderProduct = (product: any, index: number) => {
     return (
-      <View style={styles.row}>
+      <View style={styles.row} key={index}>
         <View style={{ flex: 3 }}>
           <Text style={styles.text} numberOfLines={1}>
             {product.name}
@@ -226,6 +231,30 @@ const Storefront = () => {
       return newCounts;
     });
   };
+
+  const createOrder = () => {
+    const products = currentStoreFront.products;
+    let currentTotal: number = 0;
+    for (let i = 0; i < products.length; i++) {
+      currentTotal = currentTotal + products[i].price * products[i].count;
+    }
+    const activeOrder: Order = {
+      products: products.filter((product, index) => {
+        if (productCounts[index] > 0) return product;
+      }),
+
+      createdTime: Date.now(),
+      completedTime: Date.now(),
+      active: true,
+      subTotal: currentTotal,
+      storefront: currentStoreFront,
+    };
+    activeOrder.products.length > 0
+      ? props.navigation.navigate("Cart", {
+          activeOrder,
+        })
+      : console.log("Must add products to order");
+  };
   return (
     <>
       <Header
@@ -249,6 +278,9 @@ const Storefront = () => {
           backgroundColor="#F09441"
           textColor="black"
           width="80%"
+          onPress={() => {
+            createOrder();
+          }}
         />
       </View>
     </>
