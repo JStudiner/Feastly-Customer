@@ -1,7 +1,6 @@
 import React from "react";
 import { Text, View, StyleSheet, Image } from "react-native";
 
-//checkout title, restaurant name, address, pickup time, subtotal, payment option, place order button
 import { useRoute } from "@react-navigation/native";
 import { RouteProp } from "@react-navigation/core";
 import PriceDetail from "../components/PriceDetail";
@@ -9,8 +8,9 @@ import Button from "../components/Button";
 
 interface CheckoutProps {
   route: RouteProp<any, "checkout">;
+  navigation: any;
 }
-const Checkout = ({ route }: CheckoutProps) => {
+const Checkout = ({ route, navigation }: CheckoutProps) => {
   return (
     <View style={{ backgroundColor: "#FFF7F1", height: "100%" }}>
       <View
@@ -49,12 +49,14 @@ const Checkout = ({ route }: CheckoutProps) => {
             Change Payment Type
           </Text>
         </View>
-
         <Button
           backgroundColor="#F09441"
           text="Place Order"
           textColor="black"
           width="100%"
+          onPress={() => {
+            navigation.navigate("orderconfirmed");
+          }}
         />
       </View>
     </View>

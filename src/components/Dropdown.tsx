@@ -29,9 +29,10 @@ const Dropdown = () => {
       </TouchableOpacity>
       <View style={styles.listContainer}>
         {open ? (
-          options.map((option) => {
+          options.map((option, index) => {
             return (
               <TouchableOpacity
+                key={index}
                 style={styles.listItem}
                 onPress={() => {
                   setCurrentOption(option);
