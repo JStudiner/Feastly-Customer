@@ -114,6 +114,7 @@ interface StorefrontProps {
 }
 
 import { ActiveOrderContext } from "../context/activeOrder";
+
 const Storefront: React.FC<StorefrontProps> = (props) => {
   const currentStoreFront = storefronts[0];
   const currentDay = getCurrentDay();
@@ -262,7 +263,7 @@ const Storefront: React.FC<StorefrontProps> = (props) => {
     setActiveOrder(currentOrder);
     currentOrder.products.length > 0
       ? props.navigation.navigate("Cart", {
-          activeOrder,
+          screen: "cart",
         })
       : console.log("Must add products to order");
   };

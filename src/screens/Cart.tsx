@@ -12,7 +12,7 @@ import { Product, Storefront } from "./Storefront";
 import Header from "../components/Header";
 import Dropdown from "../components/Dropdown";
 import Button from "../components/Button";
-
+import PriceDetail from "../components/PriceDetail";
 import { RouteProp } from "@react-navigation/native";
 
 export type Order = {
@@ -100,51 +100,6 @@ const Cart: React.FC<CartProps> = (props) => {
     );
   };
 
-  const renderPricing = () => {
-    return (
-      <View style={styles.priceContainer}>
-        <View style={styles.row}>
-          <Text
-            style={{
-              fontSize: 15,
-              fontWeight: "300",
-            }}
-          >
-            Subtotal
-          </Text>
-          <View style={styles.right}>
-            <Text style={{ fontSize: 15, fontWeight: "300" }}>
-              ${activeOrder.subTotal}
-            </Text>
-          </View>
-        </View>
-        <View style={styles.row}>
-          <Text
-            style={{
-              fontSize: 15,
-              fontWeight: "300",
-            }}
-          >
-            Tax
-          </Text>
-          <View style={styles.right}>
-            <Text style={{ fontSize: 15, fontWeight: "300" }}>
-              ${Math.round(0.13 * activeOrder.subTotal * 100) / 100}
-            </Text>
-          </View>
-        </View>
-        <View style={styles.row}>
-          <Text style={{ fontSize: 15, fontWeight: "700" }}>Total Price</Text>
-          <View style={styles.right}>
-            <Text style={{ fontSize: 15, fontWeight: "700" }}>
-              ${Math.round(1.13 * activeOrder.subTotal * 100) / 100}
-            </Text>
-          </View>
-        </View>
-      </View>
-    );
-  };
-
   const { navigation } = props;
   return (
     <>
@@ -171,7 +126,7 @@ const Cart: React.FC<CartProps> = (props) => {
             return renderProducts(product, index);
           })}
         </View>
-        {renderPricing()}
+        <PriceDetail price={activeOrder.subTotal} />
       </ScrollView>
       <View style={[styles.buttonRow]}>
         <Button
