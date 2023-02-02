@@ -1,10 +1,30 @@
 import React from "react";
-import { Text } from "react-native";
+import { ScrollView } from "react-native";
 
-const Explore = () => {
+import Header from "../components/Header";
+import HorizontalList from "../components/HorizontalList";
+interface ExploreProps {
+  navigation: any;
+}
+
+const Explore: React.FC<ExploreProps> = (props) => {
   return (
     <>
-      <Text>Explore</Text>
+      <Header
+        bgColor="#DEEFEF"
+        title="Find a Vendor"
+        searchBar={true}
+        type="explore"
+        height="25%"
+      />
+      <ScrollView>
+        <HorizontalList title={"Nearby"} navigation={props.navigation} />
+        <HorizontalList title={"Favourites"} navigation={props.navigation} />
+        <HorizontalList
+          title={"Picked For You"}
+          navigation={props.navigation}
+        />
+      </ScrollView>
     </>
   );
 };
