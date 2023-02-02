@@ -6,7 +6,7 @@ const CartStackNav = createNativeStackNavigator();
 
 import Cart from "../screens/Cart";
 import OrderHistory from "../screens/Order";
-
+import Checkout from "../screens/Checkout";
 import { Order } from "../screens/Cart";
 import { Storefront, hours } from "../screens/Storefront";
 
@@ -22,6 +22,7 @@ const CartNavigator: React.FC<CartNavigatorProps> = (props) => {
     >
       <CartStackNav.Screen name="cart" component={Cart} />
       <CartStackNav.Screen name="order" component={OrderHistory} />
+      <CartStackNav.Screen name="checkout" component={Checkout} />
     </CartStackNav.Navigator>
   );
 };

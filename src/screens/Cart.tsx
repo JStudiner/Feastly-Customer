@@ -1,9 +1,18 @@
-import React, { useState } from "react";
-import { Text, StyleSheet, View, TouchableOpacity } from "react-native";
+import React, { useState, useContext } from "react";
+import {
+  Text,
+  StyleSheet,
+  View,
+  TouchableOpacity,
+  ScrollView,
+} from "react-native";
 
 import { Product, Storefront } from "./Storefront";
 
 import Header from "../components/Header";
+import Dropdown from "../components/Dropdown";
+import Button from "../components/Button";
+
 import { RouteProp } from "@react-navigation/native";
 
 export type Order = {
@@ -17,16 +26,35 @@ export type Order = {
 
 interface CartProps {
   activeOrder?: Order;
+  navigation: any;
 }
-const Cart: React.FC<CartProps> = (props) => {
-  console.log(props);
-  const decrement = (index: number) => {};
 
-  const increment = (index: number) => {};
+import { ActiveOrderContext } from "../context/activeOrder";
+const Cart: React.FC<CartProps> = (props) => {
+  const { activeOrder } = useContext(ActiveOrderContext);
+  console.log(activeOrder.products);
+  const initialCounts = activeOrder.products.map((product) => product.count);
+  const [productCounts, setProductCounts] = useState(initialCounts);
+
+  const decrement = (index: number) => {
+    setProductCounts((prevCounts) => {
+      const newCounts = [...prevCounts];
+      newCounts[index] = newCounts[index] > 0 ? newCounts[index] - 1 : 0;
+      return newCounts;
+    });
+  };
+
+  const increment = (index: number) => {
+    setProductCounts((prevCounts) => {
+      const newCounts = [...prevCounts];
+      newCounts[index] = newCounts[index] + 1;
+      return newCounts;
+    });
+  };
 
   const renderProducts = (product: any, index: number) => {
     return (
-      <View style={styles.row}>
+      <View style={styles.row} key={index}>
         <View style={{ flex: 3 }}>
           <Text style={styles.text} numberOfLines={1}>
             {product.name}
@@ -49,7 +77,7 @@ const Cart: React.FC<CartProps> = (props) => {
                   </TouchableOpacity>
                 </View>
                 <View style={{ paddingHorizontal: 10 }}>
-                  <Text>0</Text>
+                  <Text>{productCounts[index]}</Text>
                 </View>
                 <View style={styles.shadow}>
                   <TouchableOpacity
@@ -72,6 +100,52 @@ const Cart: React.FC<CartProps> = (props) => {
     );
   };
 
+  const renderPricing = () => {
+    return (
+      <View style={styles.priceContainer}>
+        <View style={styles.row}>
+          <Text
+            style={{
+              fontSize: 15,
+              fontWeight: "300",
+            }}
+          >
+            Subtotal
+          </Text>
+          <View style={styles.right}>
+            <Text style={{ fontSize: 15, fontWeight: "300" }}>
+              ${activeOrder.subTotal}
+            </Text>
+          </View>
+        </View>
+        <View style={styles.row}>
+          <Text
+            style={{
+              fontSize: 15,
+              fontWeight: "300",
+            }}
+          >
+            Tax
+          </Text>
+          <View style={styles.right}>
+            <Text style={{ fontSize: 15, fontWeight: "300" }}>
+              ${Math.round(0.13 * activeOrder.subTotal * 100) / 100}
+            </Text>
+          </View>
+        </View>
+        <View style={styles.row}>
+          <Text style={{ fontSize: 15, fontWeight: "700" }}>Total Price</Text>
+          <View style={styles.right}>
+            <Text style={{ fontSize: 15, fontWeight: "700" }}>
+              ${Math.round(1.13 * activeOrder.subTotal * 100) / 100}
+            </Text>
+          </View>
+        </View>
+      </View>
+    );
+  };
+
+  const { navigation } = props;
   return (
     <>
       <Header
@@ -80,8 +154,45 @@ const Cart: React.FC<CartProps> = (props) => {
         searchBar={false}
         type="cart"
         height="15%"
+        navigation={navigation}
       />
-      {}
+      <View style={{ paddingLeft: "7%", paddingVertical: 5 }}>
+        <Text style={{ fontWeight: "700" }}>{activeOrder.storefront.name}</Text>
+
+        <Text>309 Princess St, Kingston ON K7L</Text>
+        <View style={{ paddingVertical: 10 }}>
+          <Text style={{ fontWeight: "700" }}>Pickup Time</Text>
+          <Dropdown />
+        </View>
+      </View>
+      <ScrollView>
+        <View style={{ paddingHorizontal: "7%" }}>
+          {activeOrder.products.map((product, index) => {
+            return renderProducts(product, index);
+          })}
+        </View>
+        {renderPricing()}
+      </ScrollView>
+      <View style={[styles.buttonRow]}>
+        <Button
+          text="Keep Shopping"
+          backgroundColor="#44B4B2"
+          width="45%"
+          textColor="black"
+          onPress={() => {
+            navigation.goBack();
+          }}
+        />
+        <Button
+          text="Checkout"
+          backgroundColor="#F09441"
+          width="45%"
+          textColor="black"
+          onPress={() => {
+            navigation.navigate("checkout");
+          }}
+        />
+      </View>
     </>
   );
 };
@@ -93,12 +204,18 @@ const styles = StyleSheet.create({
     display: "flex",
     flexDirection: "row",
   },
-  starImage: {},
+  buttonRow: {
+    flexDirection: "row",
+    display: "flex",
+    justifyContent: "space-evenly",
+    alignItems: "center",
+  },
   row: {
-    flex: 1,
     paddingBottom: 10,
     flexDirection: "row",
-    justifyContent: "space-between",
+    display: "flex",
+    justifyContent: "center",
+
     alignItems: "center",
   },
   right: {
@@ -111,7 +228,7 @@ const styles = StyleSheet.create({
     fontWeight: "500",
   },
   description: {
-    color: "rgba(0,0,0,0.5)",
+    color: "black",
     fontSize: 12,
     fontWeight: "500",
   },
@@ -146,5 +263,18 @@ const styles = StyleSheet.create({
     shadowOffset: { width: -0.5, height: 0.5 },
     shadowOpacity: 1,
     shadowRadius: 0,
+  },
+  priceRow: {
+    flex: 1,
+    flexDirection: "row",
+    justifyContent: "space-between",
+  },
+  priceContainer: {
+    flex: 1,
+    display: "flex",
+    marginHorizontal: 60,
+    borderTopColor: "black",
+    borderTopWidth: 1,
+    justifyContent: "flex-start",
   },
 });

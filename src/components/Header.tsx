@@ -13,10 +13,11 @@ interface HeaderProps {
   searchBar: boolean;
   type: string;
   height: string;
+  navigation?: any;
 }
 const Header: React.FC<HeaderProps> = (props) => {
-  const { bgColor, title, type, height, searchBar } = props;
-  const navigation = useNavigation();
+  const { bgColor, title, type, height, searchBar, navigation } = props;
+
   const handleType = () => {
     if (type === "storefront") {
       return (
@@ -52,7 +53,12 @@ const Header: React.FC<HeaderProps> = (props) => {
             <Text style={styles.text}>{title}</Text>
           </View>
           <View style={styles.shadow}>
-            <TouchableOpacity style={styles.cartButton}>
+            <TouchableOpacity
+              style={styles.cartButton}
+              onPress={() => {
+                navigation.navigate("order");
+              }}
+            >
               <Text style={{ fontWeight: "700" }}>Past Orders</Text>
             </TouchableOpacity>
           </View>

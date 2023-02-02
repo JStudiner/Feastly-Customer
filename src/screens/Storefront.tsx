@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import {
   Text,
   View,
@@ -8,7 +8,7 @@ import {
   FlatList,
   ScrollView,
 } from "react-native";
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, useNavigationBuilder } from "@react-navigation/native";
 import Header from "../components/Header";
 import Button from "../components/Button";
 export type hours = {
@@ -112,6 +112,8 @@ const getCurrentDay = () => {
 interface StorefrontProps {
   navigation: any;
 }
+
+import { ActiveOrderContext } from "../context/activeOrder";
 const Storefront: React.FC<StorefrontProps> = (props) => {
   const currentStoreFront = storefronts[0];
   const currentDay = getCurrentDay();
@@ -232,13 +234,21 @@ const Storefront: React.FC<StorefrontProps> = (props) => {
     });
   };
 
+  const { activeOrder, setActiveOrder } = useContext(ActiveOrderContext);
+
   const createOrder = () => {
-    const products = currentStoreFront.products;
+    const products = currentStoreFront.products.filter((product, index) => {
+      if (productCounts[index] > 0) {
+        product.count = productCounts[index];
+        return product;
+      }
+    });
     let currentTotal: number = 0;
     for (let i = 0; i < products.length; i++) {
       currentTotal = currentTotal + products[i].price * products[i].count;
     }
-    const activeOrder: Order = {
+
+    const currentOrder: Order = {
       products: products.filter((product, index) => {
         if (productCounts[index] > 0) return product;
       }),
@@ -249,7 +259,8 @@ const Storefront: React.FC<StorefrontProps> = (props) => {
       subTotal: currentTotal,
       storefront: currentStoreFront,
     };
-    activeOrder.products.length > 0
+    setActiveOrder(currentOrder);
+    currentOrder.products.length > 0
       ? props.navigation.navigate("Cart", {
           activeOrder,
         })
