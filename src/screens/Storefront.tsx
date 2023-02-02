@@ -275,6 +275,7 @@ const Storefront: React.FC<StorefrontProps> = (props) => {
         title={currentStoreFront.name}
         type="storefront"
         height="20%"
+        navigation={props.navigation}
       />
       <ScrollView style={{ top: 30 }}>
         {renderInfo()}

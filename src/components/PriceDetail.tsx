@@ -72,11 +72,8 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
   },
   priceContainer: {
-    flex: 1,
     display: "flex",
-    marginHorizontal: 60,
     borderTopColor: "black",
-    borderTopWidth: 1,
     justifyContent: "flex-start",
   },
 });
