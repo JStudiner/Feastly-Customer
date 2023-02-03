@@ -75,7 +75,7 @@ const Header: React.FC<HeaderProps> = (props) => {
           <TouchableOpacity
             style={styles.button}
             onPress={() => {
-              navigation.goBack();
+              navigation.navigate("Map");
             }}
           >
             <Ionicons name="chevron-back-outline" size={27} />

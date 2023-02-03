@@ -1,9 +1,10 @@
 import React, { useState } from "react";
-import { Text, StyleSheet, View, Image } from "react-native";
+import { Text, StyleSheet, View, Image, TouchableOpacity } from "react-native";
+import MapView, { Marker, Callout } from "react-native-maps";
 
 import Header from "../components/Header";
+import BottomModal from "../components/BottomModal";
 
-import MapView, { Marker, Callout } from "react-native-maps";
 const dummyData = [
   {
     name: "Connor's Cookies",
@@ -50,17 +51,16 @@ const dummyData = [
   },
 ];
 
-const Map = () => {
+interface MapProps {
+  navigation: any;
+}
+const Map = ({ navigation }: MapProps) => {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [modalVisible, setModalVisible] = useState(false);
 
   const handleOpen = () => {
-    const temp = dummyData[0].name;
-    const tempd = dummyData[0].description;
-    setTitle(temp);
-    setDescription(tempd);
-    setModalVisible(true);
+    setModalVisible(!modalVisible);
   };
   return (
     <>
@@ -85,7 +85,9 @@ const Map = () => {
           <Marker
             key={index}
             coordinate={marker.latlng}
-            onPress={(e) => handleOpen()}
+            onPress={() => {
+              handleOpen();
+            }}
           >
             <View>
               <Image
@@ -96,6 +98,45 @@ const Map = () => {
           </Marker>
         ))}
       </MapView>
+      {modalVisible ? (
+        <BottomModal visible={modalVisible} height="30%">
+          <View style={styles.container}>
+            <View style={styles.row}>
+              <View style={styles.titleStars}>
+                <Text style={{ fontWeight: "bold", fontSize: 25 }}>
+                  {dummyData[0].name}
+                </Text>
+                <Text></Text>
+              </View>
+              <View style={styles.shadow}>
+                <TouchableOpacity
+                  style={styles.orderNowButton}
+                  onPress={() => {
+                    navigation.navigate("Explore", { screen: "storefront" });
+                  }}
+                >
+                  <Text style={{ fontWeight: "bold" }}>Order Now</Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+            <View style={styles.description}>
+              <Text>{dummyData[0].description}</Text>
+            </View>
+            <View style={styles.shadow}>
+              <TouchableOpacity
+                style={styles.closeButton}
+                onPress={() => {
+                  setModalVisible(false);
+                }}
+              >
+                <Text style={{ fontWeight: "bold" }}>Close</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </BottomModal>
+      ) : (
+        <></>
+      )}
     </>
   );
 };
@@ -103,9 +144,47 @@ const Map = () => {
 export default Map;
 
 const styles = StyleSheet.create({
+  orderNowButton: {
+    borderWidth: 3,
+    borderColor: "black",
+    borderRadius: 10,
+    justifyContent: "center",
+    alignItems: "center",
+    top: "15%",
+    width: 100,
+    height: 30,
+    right: "5%",
+
+    backgroundColor: "#F09441",
+  },
+  closeButton: {
+    borderWidth: 3,
+    borderColor: "black",
+    borderRadius: 10,
+    justifyContent: "center",
+    alignItems: "center",
+
+    width: 200,
+    height: 30,
+
+    alignSelf: "center",
+    backgroundColor: "#CE7777",
+  },
+  shadow: {
+    shadowColor: "#000000",
+    shadowOffset: { width: -2, height: 2 },
+    shadowOpacity: 1,
+    shadowRadius: 3,
+  },
+  titleStars: {
+    top: 15,
+    left: 20,
+    flex: 1,
+  },
+  description: {
+    width: "90%",
+  },
   container: {
-    flex: 3,
-    backgroundColor: "#FFF",
     width: "100%",
     alignItems: "center",
     justifyContent: "center",
@@ -156,5 +235,9 @@ const styles = StyleSheet.create({
   modalText: {
     marginBottom: 15,
     textAlign: "center",
+  },
+  row: {
+    flexDirection: "row",
+    justifyContent: "space-between",
   },
 });

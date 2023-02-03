@@ -244,7 +244,10 @@ const colors = [
 
 import { ActiveOrderContext } from "../context/activeOrder";
 
-const OrderHistory = () => {
+interface OrderHistoryProps {
+  navigation: any;
+}
+const OrderHistory = ({ navigation }: OrderHistoryProps) => {
   const { activeOrder } = useContext(ActiveOrderContext);
   const [orders, setOrders] = useState<Order[]>(
     activeOrder.active ? [activeOrder, ...initialOrders] : initialOrders
@@ -301,6 +304,7 @@ const OrderHistory = () => {
         title="Past Orders"
         type="orders"
         searchBar={false}
+        navigation={navigation}
       />
       <FlatList
         data={orders}
