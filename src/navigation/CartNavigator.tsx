@@ -21,8 +21,8 @@ const CartNavigator: React.FC<CartNavigatorProps> = (props) => {
       <CartStackNav.Screen name="order" component={OrderHistory} />
 
       <CartStackNav.Screen name="cart" component={Cart} />
-      <CartStackNav.Screen name="checkout" component={Checkout} />
       <CartStackNav.Screen name="orderconfirmed" component={OrderConfirmed} />
+      <CartStackNav.Screen name="checkout" component={Checkout} />
     </CartStackNav.Navigator>
   );
 };
