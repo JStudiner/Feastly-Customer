@@ -5,7 +5,7 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 const CartStackNav = createNativeStackNavigator();
 
 import Cart from "../screens/Cart";
-import OrderHistory from "../screens/Order";
+import OrderHistory from "../screens/OrderHistory";
 import Checkout from "../screens/Checkout";
 import OrderConfirmed from "../screens/OrderConfirmed";
 interface CartNavigatorProps {

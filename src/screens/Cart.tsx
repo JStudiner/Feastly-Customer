@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import {
   Text,
   StyleSheet,
@@ -31,11 +31,10 @@ interface CartProps {
 
 import { ActiveOrderContext } from "../context/activeOrder";
 const Cart: React.FC<CartProps> = (props) => {
-  const { activeOrder } = useContext(ActiveOrderContext);
-  console.log(activeOrder.products);
+  const { activeOrder, setActiveOrder } = useContext(ActiveOrderContext);
   const initialCounts = activeOrder.products.map((product) => product.count);
   const [productCounts, setProductCounts] = useState(initialCounts);
-
+  const [pickupTime, setPickupTime] = useState("");
   const decrement = (index: number) => {
     setProductCounts((prevCounts) => {
       const newCounts = [...prevCounts];
@@ -101,6 +100,21 @@ const Cart: React.FC<CartProps> = (props) => {
   };
 
   const { navigation } = props;
+
+  useEffect(() => {
+    const products = activeOrder.products.filter((product, index) => {
+      if (productCounts[index] > 0) {
+        product.count = productCounts[index];
+        return product;
+      }
+    });
+    let currentTotal: number = 0;
+    for (let i = 0; i < products.length; i++) {
+      currentTotal = currentTotal + products[i].price * products[i].count;
+    }
+    const finalOrder = { ...activeOrder, subTotal: currentTotal };
+    setActiveOrder(finalOrder);
+  }, [productCounts]);
   return (
     <>
       <Header
@@ -117,7 +131,12 @@ const Cart: React.FC<CartProps> = (props) => {
         <Text>309 Princess St, Kingston ON K7L</Text>
         <View style={{ paddingVertical: 10 }}>
           <Text style={{ fontWeight: "700" }}>Pickup Time</Text>
-          <Dropdown />
+          <Dropdown
+            options={["4:15", "4:30", "4:45", "5:00"]}
+            setOption={(option: string) => {
+              setPickupTime(option);
+            }}
+          />
         </View>
       </View>
       <ScrollView>
@@ -144,7 +163,9 @@ const Cart: React.FC<CartProps> = (props) => {
           width="45%"
           textColor="black"
           onPress={() => {
-            navigation.navigate("checkout");
+            navigation.navigate("checkout", {
+              pickupTime: pickupTime,
+            });
           }}
         />
       </View>

@@ -1,7 +1,6 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Text, View, StyleSheet, Image } from "react-native";
 
-import { useRoute } from "@react-navigation/native";
 import { RouteProp } from "@react-navigation/core";
 import PriceDetail from "../components/PriceDetail";
 import Button from "../components/Button";
@@ -10,7 +9,11 @@ interface CheckoutProps {
   route: RouteProp<any, "checkout">;
   navigation: any;
 }
+
+import { ActiveOrderContext } from "../context/activeOrder";
 const Checkout = ({ route, navigation }: CheckoutProps) => {
+  const { activeOrder } = useContext(ActiveOrderContext);
+
   return (
     <View style={{ backgroundColor: "#FFF7F1", height: "100%" }}>
       <View
@@ -20,20 +23,27 @@ const Checkout = ({ route, navigation }: CheckoutProps) => {
           backgroundColor: "#FFF7F1",
         }}
       >
-        <Text style={{ fontSize: 30, fontWeight: "700" }}>Checkout</Text>
-
+        <Text style={{ fontSize: 30, fontWeight: "700", left: "-3%" }}>
+          Checkout
+        </Text>
+        <View style={{ borderColor: "black", borderWidth: 3, marginTop: 10 }}>
+          <Image
+            source={require("../../assets/feastlyDemoDummyMap.png")}
+            style={{ width: "100%", height: 125 }}
+          />
+        </View>
         <View style={styles.headerText}>
           <Text style={{ fontWeight: "700", fontSize: 18 }}>
-            Restaurant Name
+            {activeOrder.storefront.name}
           </Text>
           <Text>Address</Text>
         </View>
         <View>
           <Text style={{ fontWeight: "700", fontSize: 18 }}>Pickup Time</Text>
-          <Text>4:45</Text>
+          <Text>{route.params?.pickupTime}</Text>
         </View>
         <View style={{ marginTop: 30 }}>
-          <PriceDetail price={20} />
+          <PriceDetail price={activeOrder.subTotal} />
         </View>
 
         <View style={styles.paymentInfo}>
@@ -55,7 +65,9 @@ const Checkout = ({ route, navigation }: CheckoutProps) => {
           textColor="black"
           width="100%"
           onPress={() => {
-            navigation.navigate("orderconfirmed");
+            navigation.navigate("orderconfirmed", {
+              pickupTime: route.params?.pickupTime,
+            });
           }}
         />
       </View>

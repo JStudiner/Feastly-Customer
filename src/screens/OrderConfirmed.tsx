@@ -1,12 +1,18 @@
-import React from "react";
-
+import React, { useContext } from "react";
+import { RouteProp } from "@react-navigation/core";
 import { Text, StyleSheet, View, Image } from "react-native";
 import Button from "../components/Button";
 
 interface OrderConfirmedProps {
   navigation: any;
+  route: RouteProp<any, "checkout">;
 }
-const OrderConfirmed = ({ navigation }: OrderConfirmedProps) => {
+
+import { ActiveOrderContext } from "../context/activeOrder";
+
+const OrderConfirmed = ({ route, navigation }: OrderConfirmedProps) => {
+  const { activeOrder } = useContext(ActiveOrderContext);
+  console.log(route);
   return (
     <View style={styles.container}>
       <Image
@@ -15,11 +21,13 @@ const OrderConfirmed = ({ navigation }: OrderConfirmedProps) => {
       />
       <View style={{ top: 50 }}>
         <Text style={{ fontSize: 30, fontWeight: "bold" }}>
-          Your order for Connor's Cookies has been placed!{" "}
+          {`Your order for ${activeOrder.storefront.name} has been placed!`}
         </Text>
       </View>
       <View style={{ top: 70, left: -23 }}>
-        <Text style={{ fontSize: 25 }}>Pick up at 12:25 pm </Text>
+        <Text style={{ fontSize: 25 }}>
+          {`Pick up at ${route.params?.pickupTime}`}{" "}
+        </Text>
       </View>
       <View style={{ top: 100 }}>
         <Button
