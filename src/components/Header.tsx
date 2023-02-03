@@ -138,6 +138,7 @@ const styles = StyleSheet.create({
   },
 
   textContainer: {
+    zIndex: 3,
     textAlign: "left",
     width: "80%",
   },
