@@ -34,7 +34,7 @@ const Cart: React.FC<CartProps> = (props) => {
   const { activeOrder, setActiveOrder } = useContext(ActiveOrderContext);
   const initialCounts = activeOrder.products.map((product) => product.count);
   const [productCounts, setProductCounts] = useState(initialCounts);
-  const [pickupTime, setPickupTime] = useState("");
+  const [pickupTime, setPickupTime] = useState("4:15");
   const decrement = (index: number) => {
     setProductCounts((prevCounts) => {
       const newCounts = [...prevCounts];

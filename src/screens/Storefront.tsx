@@ -94,6 +94,87 @@ const storefronts: Storefront[] = [
       },
     ],
   },
+  {
+    weeklyHours: [
+      { day: "Monday", open: 9, close: 17 },
+      { day: "Tuesday", open: 9, close: 17 },
+      { day: "Wednesday", open: 9, close: 17 },
+      { day: "Thursday", open: 9, close: 17 },
+      { day: "Friday", open: 9, close: 17 },
+      { day: "Saturday", open: 9, close: 17 },
+      { day: "Sunday", open: 9, close: 17 },
+    ],
+    rating: 4.5,
+    description: "A bakery specializing in artisan bread and pastries.",
+    name: "The Bread Basket",
+    products: [
+      {
+        name: "Sourdough Bread",
+        description: "",
+        imageURL: "",
+        price: 5.99,
+        count: 10,
+        id: 1,
+      },
+      {
+        name: "Croissant",
+        description: "",
+        imageURL: "",
+        price: 2.99,
+        count: 20,
+        id: 2,
+      },
+      {
+        name: "Pain Au Chocolat",
+        description: "",
+        imageURL: "",
+        price: 3.49,
+        count: 15,
+        id: 3,
+      },
+    ],
+  },
+  {
+    weeklyHours: [
+      { day: "Monday", open: 11, close: 22 },
+      { day: "Tuesday", open: 11, close: 22 },
+      { day: "Wednesday", open: 11, close: 22 },
+      { day: "Thursday", open: 11, close: 22 },
+      { day: "Friday", open: 11, close: 23 },
+      { day: "Saturday", open: 11, close: 23 },
+      { day: "Sunday", open: 11, close: 22 },
+    ],
+    rating: 4.2,
+    description:
+      "A gourmet burger restaurant with a variety of toppings and sauces.",
+    name: "Burger Bliss",
+    products: [
+      {
+        name: "Classic Burger",
+        description: "",
+        imageURL: "",
+        price: 10.99,
+        count: 10,
+        id: 4,
+      },
+      {
+        name: "Veggie Burger",
+        description: "",
+        imageURL: "",
+        price: 12.49,
+        count: 15,
+        id: 5,
+      },
+      {
+        name: "BBQ Bacon Burger",
+        description: "",
+        imageURL: "",
+        price: 13.99,
+        count: 8,
+        id: 6,
+      },
+    ],
+  },
 ];
 
 const getCurrentDay = () => {
