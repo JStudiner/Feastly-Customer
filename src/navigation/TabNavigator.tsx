@@ -13,7 +13,7 @@ const Tab = createBottomTabNavigator();
 const TabNavigator = () => {
   return (
     <Tab.Navigator
-      sceneContainerStyle={{backgroundColor:"#F5F5F5"}}
+      sceneContainerStyle={{backgroundColor:"#FFF4DF"}}
       screenOptions={({ route }) => ({
         tabBarIcon: ({ focused, color, size }) => {
           let iconName;
