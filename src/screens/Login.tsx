@@ -3,10 +3,13 @@ import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
 import Button from "../components/Button";
 import TextInputBox from "../components/TextInput";
+import { Auth } from "aws-amplify";
 
 interface LoginProps {
   navigation: any;
 }
+
+async function signOut() {}
 const Login: React.FC<LoginProps> = ({ navigation }) => {
   const [formState, setFormState] = useState({
     login: true,
@@ -33,6 +36,15 @@ const Login: React.FC<LoginProps> = ({ navigation }) => {
       : navigation.navigate("userintakev1");
   };
 
+  async function handleSignOut() {
+    try {
+      await Auth.signOut();
+      console.log("signed out");
+    } catch (error) {
+      console.log("error");
+    }
+  }
+
   return (
     <View style={styles.container}>
       <View style={{ top: -20 }}>
@@ -57,9 +69,7 @@ const Login: React.FC<LoginProps> = ({ navigation }) => {
         backgroundColor="#F5D6B8"
         textColor="black"
         width="70%"
-        onPress={() => {
-          handleLogin();
-        }}
+        onPress={handleSignOut}
       />
 
       <TouchableOpacity
