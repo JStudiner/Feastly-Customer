@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "feastly",
-    "slug": "feastly",
+    "name": "Feastly",
+    "slug": "Feastly",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -18,7 +18,8 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.jstudiner.Feastly"
     },
     "android": {
       "adaptiveIcon": {
@@ -28,6 +29,11 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "0eec0e5a-a65e-4334-92b7-5eaac08fe6a9"
+      }
     }
   }
 }
