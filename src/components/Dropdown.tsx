@@ -8,8 +8,12 @@ import {
   TouchableOpacity,
   ScrollView,
 } from "react-native";
-const options = ["4:15", "4:30", "4:45", "5:00"];
-const Dropdown = () => {
+
+interface DropDownProps {
+  options: string[];
+  setOption: (option: string) => any;
+}
+const Dropdown = ({ options, setOption }: DropDownProps) => {
   const [open, setOpen] = useState(false);
   const [currentOption, setCurrentOption] = useState(options[0]);
 
@@ -29,11 +33,13 @@ const Dropdown = () => {
       </TouchableOpacity>
       <View style={styles.listContainer}>
         {open ? (
-          options.map((option) => {
+          options.map((option, index) => {
             return (
               <TouchableOpacity
+                key={index}
                 style={styles.listItem}
                 onPress={() => {
+                  setOption(option);
                   setCurrentOption(option);
                   setOpen(false);
                 }}

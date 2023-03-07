@@ -64,6 +64,29 @@ const Header: React.FC<HeaderProps> = (props) => {
           </View>
         </View>
       );
+    } else if (type === "orders") {
+      return (
+        <View
+          style={{
+            width: "100%",
+            marginLeft: "20%",
+          }}
+        >
+          <TouchableOpacity
+            style={styles.button}
+            onPress={() => {
+              navigation.navigate("Map");
+            }}
+          >
+            <Ionicons name="chevron-back-outline" size={27} />
+          </TouchableOpacity>
+          <View>
+            <View style={styles.orderPosition}>
+              <Text style={styles.text}>{title}</Text>
+            </View>
+          </View>
+        </View>
+      );
     }
   };
   return (
@@ -115,6 +138,7 @@ const styles = StyleSheet.create({
   },
 
   textContainer: {
+    zIndex: 3,
     textAlign: "left",
     width: "80%",
   },
@@ -132,7 +156,10 @@ const styles = StyleSheet.create({
     bottom: -25,
     left: "10%",
   },
-
+  orderPosition: {
+    position: "absolute",
+    top: 20,
+  },
   button: {
     backgroundColor: "#F09441",
     alignItems: "center",
@@ -142,8 +169,5 @@ const styles = StyleSheet.create({
     borderWidth: 3,
     width: 40,
     height: 40,
-    position: "absolute",
-    top: 50,
-    left: 30,
   },
 });

@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import {
   Text,
   StyleSheet,
@@ -12,7 +12,7 @@ import { Product, Storefront } from "./Storefront";
 import Header from "../components/Header";
 import Dropdown from "../components/Dropdown";
 import Button from "../components/Button";
-
+import PriceDetail from "../components/PriceDetail";
 import { RouteProp } from "@react-navigation/native";
 
 export type Order = {
@@ -31,11 +31,10 @@ interface CartProps {
 
 import { ActiveOrderContext } from "../context/activeOrder";
 const Cart: React.FC<CartProps> = (props) => {
-  const { activeOrder } = useContext(ActiveOrderContext);
-  console.log(activeOrder.products);
+  const { activeOrder, setActiveOrder } = useContext(ActiveOrderContext);
   const initialCounts = activeOrder.products.map((product) => product.count);
   const [productCounts, setProductCounts] = useState(initialCounts);
-
+  const [pickupTime, setPickupTime] = useState("4:15");
   const decrement = (index: number) => {
     setProductCounts((prevCounts) => {
       const newCounts = [...prevCounts];
@@ -100,52 +99,22 @@ const Cart: React.FC<CartProps> = (props) => {
     );
   };
 
-  const renderPricing = () => {
-    return (
-      <View style={styles.priceContainer}>
-        <View style={styles.row}>
-          <Text
-            style={{
-              fontSize: 15,
-              fontWeight: "300",
-            }}
-          >
-            Subtotal
-          </Text>
-          <View style={styles.right}>
-            <Text style={{ fontSize: 15, fontWeight: "300" }}>
-              ${activeOrder.subTotal}
-            </Text>
-          </View>
-        </View>
-        <View style={styles.row}>
-          <Text
-            style={{
-              fontSize: 15,
-              fontWeight: "300",
-            }}
-          >
-            Tax
-          </Text>
-          <View style={styles.right}>
-            <Text style={{ fontSize: 15, fontWeight: "300" }}>
-              ${Math.round(0.13 * activeOrder.subTotal * 100) / 100}
-            </Text>
-          </View>
-        </View>
-        <View style={styles.row}>
-          <Text style={{ fontSize: 15, fontWeight: "700" }}>Total Price</Text>
-          <View style={styles.right}>
-            <Text style={{ fontSize: 15, fontWeight: "700" }}>
-              ${Math.round(1.13 * activeOrder.subTotal * 100) / 100}
-            </Text>
-          </View>
-        </View>
-      </View>
-    );
-  };
-
   const { navigation } = props;
+
+  useEffect(() => {
+    const products = activeOrder.products.filter((product, index) => {
+      if (productCounts[index] > 0) {
+        product.count = productCounts[index];
+        return product;
+      }
+    });
+    let currentTotal: number = 0;
+    for (let i = 0; i < products.length; i++) {
+      currentTotal = currentTotal + products[i].price * products[i].count;
+    }
+    const finalOrder = { ...activeOrder, subTotal: currentTotal };
+    setActiveOrder(finalOrder);
+  }, [productCounts]);
   return (
     <>
       <Header
@@ -162,7 +131,12 @@ const Cart: React.FC<CartProps> = (props) => {
         <Text>309 Princess St, Kingston ON K7L</Text>
         <View style={{ paddingVertical: 10 }}>
           <Text style={{ fontWeight: "700" }}>Pickup Time</Text>
-          <Dropdown />
+          <Dropdown
+            options={["4:15", "4:30", "4:45", "5:00"]}
+            setOption={(option: string) => {
+              setPickupTime(option);
+            }}
+          />
         </View>
       </View>
       <ScrollView>
@@ -171,7 +145,7 @@ const Cart: React.FC<CartProps> = (props) => {
             return renderProducts(product, index);
           })}
         </View>
-        {renderPricing()}
+        <PriceDetail price={activeOrder.subTotal} />
       </ScrollView>
       <View style={[styles.buttonRow]}>
         <Button
@@ -189,7 +163,9 @@ const Cart: React.FC<CartProps> = (props) => {
           width="45%"
           textColor="black"
           onPress={() => {
-            navigation.navigate("checkout");
+            navigation.navigate("checkout", {
+              pickupTime: pickupTime,
+            });
           }}
         />
       </View>
