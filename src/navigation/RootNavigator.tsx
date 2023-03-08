@@ -28,9 +28,6 @@ const RootNavigator = () => {
           tabBarInactiveTintColor: "gray",
         })}
       >
-        <LoginStackNav.Screen name="login" component={Login} />
-        <LoginStackNav.Screen name="userintakev1" component={UserIntakeV1} />
-        <LoginStackNav.Screen name="userintakev2" component={UserIntakeV2} />
         <LoginStackNav.Screen name="tab" component={TabNavigator} />
       </LoginStackNav.Navigator>
     </UserInfo.Provider>

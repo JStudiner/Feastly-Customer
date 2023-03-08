@@ -14,6 +14,9 @@ package-lock.json
 # macOS
 .DS_Store
 
+.secret-*
+**.sample
+
 #amplify-do-not-edit-begin
 amplify/\#current-cloud-backend
 amplify/.config/local-*
@@ -32,8 +35,6 @@ amplifyconfiguration.dart
 amplify-build-config.json
 amplify-gradle-config.json
 amplifytools.xcconfig
-eas.json
-
 .secret-*
 **.sample
 #amplify-do-not-edit-end
